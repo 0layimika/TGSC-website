@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{{ blog.title }} - TGSC Blog</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <a class="navbar-brand" href="{% url 'all' %}">TGSC Blog</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+            aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'home' %}">Home</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-lg-8">
+                <h1 class="mt-4">{{ blog.title }}</h1>
+                <p class="lead">Posted on {{ blog.date_created}}</p>
+                <hr>
+                <p style="word-wrap: break-word; white-space: pre-line;">{{ blog.content }}</p>
+
+                <!-- Comments Section -->
+                <div class="card my-4">
+                    <h5 class="card-header">Comments</h5>
+                    <div class="card-body">
+                        <!-- Display comments -->
+                        {% for comment in comments %}
+                            <div class="media mb-3">
+                                <div class="media-body">
+                                    <h6 class="mt-0">{{ comment.date_created }}</h6>
+                                    {{ comment.opinion }}
+                                    <h6 class="mt-0">{{ comment.author }}</h6>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                        <!-- Add a new comment -->
+                        <a href="{% url 'add_comment' blog_id=blog.id %}" class="btn btn-primary">Add Comment</a>
+                    </div>
+                </div>
+                <!-- End Comments Section -->
+            </div>
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container -->
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

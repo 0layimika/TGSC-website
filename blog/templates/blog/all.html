@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>TGSC Blog</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles -->
+    <style>
+        body {
+            padding-top: 56px;
+        }
+
+        @media (min-width: 768px) {
+            body {
+                padding-top: 76px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <a class="navbar-brand" href="{% url 'home' %}">The Gospel Study Center Blog</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+            aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'home' %}">Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'about' %}">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Blog Post Content -->
+                <h1 class="mt-4">The TGSC Blog</h1>
+                <!-- Sample Blog Post -->
+                {% for blog in blogs  %}
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h2 class="card-title">{{ blog.title }}</h2>
+                        <p class="card-text">{{blog.summary}} <a href="{% url 'detail' blog_id=blog.id %}">...more</a></p>
+                        <a href="{% url 'detail' blog_id=blog.id %}" class="btn btn-primary">Read More &rarr;</a>
+                    </div>
+                    <div class="card-footer text-muted">
+                        Posted on {{ blog.date_created }} by Shobayo Kayode
+                    </div>
+                </div>
+                {% endfor %}
+                <!-- End Sample Blog Post -->
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+{#                <div class="card my-4">#}
+{#                    <h5 class="card-header">Search</h5>#}
+{#                    <div class="card-body">#}
+{#                        <div class="input-group">#}
+{#                            <input type="text" class="form-control" placeholder="Search for...">#}
+{#                            <span class="input-group-btn">#}
+{#                                <button class="btn btn-secondary" type="button">Go!</button>#}
+{#                            </span>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+
+{#                <div class="card my-4">#}
+{#                    <h5 class="card-header">Categories</h5>#}
+{#                    <div class="card-body">#}
+{#                        <ul class="list-unstyled">#}
+{#                            <li><a href="#">Category 1</a></li>#}
+{#                            <li><a href="#">Category 2</a></li>#}
+{#                            <li><a href="#">Category 3</a></li>#}
+{#                        </ul>#}
+{#                    </div>#}
+{#                </div>#}
+            </div>
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container -->
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

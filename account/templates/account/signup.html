@@ -1,0 +1,69 @@
+  <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>TGSC Blog</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles -->
+    <style>
+        body {
+            padding-top: 56px;
+        }
+
+        @media (min-width: 768px) {
+            body {
+                padding-top: 76px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h2>Sign Up</h2>
+          </div>
+          <div class="card-body">
+            <form method="post" class="form" action="{% url 'signup' %}">
+              {% csrf_token %}
+
+              <!-- Username -->
+              <div class="form-group">
+                <label for="id_username">Username</label>
+                <input type="text" name="username" id="id_username" class="form-control" required>
+              </div>
+
+              <!-- Email -->
+              <div class="form-group">
+                <label for="id_email">Email</label>
+                <input type="email" name="email" id="id_email" class="form-control" required>
+              </div>
+
+              <!-- Password -->
+              <div class="form-group">
+                <label for="id_password">Password</label>
+                <input type="password" name="password" id="id_password" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="id_password2">Re-enter Password</label>
+                <input type="password" name="password2" id="id_password2" class="form-control" required>
+              </div>
+            <h6>Have an account??<a href="{% url 'login' %}">Login</a></h6>
+              {% if error %}
+              {{ error }}
+              <br/>
+              {% endif %}
+
+              <button type="submit" class="btn btn-primary">Sign Up</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
