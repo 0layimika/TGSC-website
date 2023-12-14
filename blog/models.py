@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 class Blog(models.Model):
     title = models.CharField(max_length=100)
     content = models.TextField()
-    like = models.IntegerField
+    like = models.ManyToManyField(User, related_name='blog_likes', blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

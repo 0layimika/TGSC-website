@@ -3,8 +3,12 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{{ blog.title }} - TGSC Blog</title>
+    {% csrf_token %}
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
@@ -38,7 +42,11 @@
 
                 <!-- Comments Section -->
                 <div class="card my-4">
+                    <button id="like-button" data-blog-id="{{ blog.id }}" {% if request.user in blog.likes.all %}class="liked"{% endif %}>
+                    Like({{ blog.like.count }})
+                    </button>
                     <h5 class="card-header">Comments</h5>
+
                     <div class="card-body">
                         <!-- Display comments -->
                         {% for comment in comments %}
@@ -66,7 +74,32 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('like-button').addEventListener('click', function(){
+            var blogId = this.getAttribute('data-blog-id');
+            var url = `/blog/${blogId}/like/`;
 
+            fetch(url,{
+                method: 'POST',
+                headers:{
+                    'X-CSRFToken':'{{ csrf_token }}',
+                    'Content-Type':'application/json',
+                    'X-Requested-With':'XMLHttpRequest',
+                },
+                credentials:'same-origin'
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.liked) {
+                        this.classList.add('liked');
+                    } else {
+                        this.classList.remove('liked');
+                    }
+                    this.innerText = `Like (${data.count})`;
+                })
+                .catch(error => console.error('Error:',error));
+        });
+    </script>
 </body>
 
 </html>

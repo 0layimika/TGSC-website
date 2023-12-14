@@ -3,6 +3,7 @@ from .models import *
 from django.views.generic import *
 from .forms import CommentForm
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 # Create your views here.
 def home(request):
     blogs = Blog.objects
@@ -38,3 +39,17 @@ def contact(request):
 
 def about(request):
     return render(request, 'blog/about.html')
+@login_required(login_url='/account/login')
+def like_blog(request, blog_id):
+    blog = get_object_or_404(Blog, pk=blog_id)
+    if request.user in blog.like.all():
+        blog.like.remove(request.user)
+        liked = False
+    else:
+        blog.like.add(request.user)
+        liked = True
+
+    return JsonResponse({'liked':liked, 'count':blog.like.count()})
+
+
+

@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-3&spk!+w3-c$5jl$d4!gxx8%*4prlaja-5@f%j2nhq75q9j(i$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['thegospelstudycenter.onrender.com','127.0.0.1:8000']
+ALLOWED_HOSTS = ['thegospelstudycenter.onrender.com','127.0.0.1']
 
 
 # Application definition
