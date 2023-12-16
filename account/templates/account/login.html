@@ -29,7 +29,7 @@
             <h2>Login</h2>
           </div>
           <div class="card-body">
-            <form method="post" class="form" action="{% url 'login' %}">
+            <form method="post" class="form" action="{% url 'login' %}?next={{ request.GET.next }}">
               {% csrf_token %}
 
               <!-- Username -->

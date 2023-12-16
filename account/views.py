@@ -27,10 +27,11 @@ def login(request):
         user = auth.authenticate(username=request.POST['username'],password=request.POST['password'])
         if user is not None:
             auth.login(request,user)
-            return redirect('home')
+            return redirect(request.GET.get('next','home'))
         else:
             return render(request,'account/login.html',{'error':'username or password is incorrect'})
     else:
+        request.session['next']= request.GET.get('next','/')
         return render(request,'account/login.html')
 
 def logout(request):

@@ -2,10 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import *
 from django.views.generic import *
 from .forms import CommentForm
-from django.contrib.auth.decorators import login_required, user_passes_test
-from django.http import JsonResponse, HttpResponse
-from django.views.decorators.http import require_POST
-# Create your views here.
+from django.contrib.auth.decorators import login_required
+from django.db.models import Count
 def home(request):
     blogs = Blog.objects
     latest_blog = Blog.objects.order_by('date_created')[:3]
@@ -32,7 +30,11 @@ def add_comment(request, blog_id):
             form = CommentForm()
     return render(request, 'blog/add_comment.html', {'blog': specific, 'form': form})
 def all(request):
-    blogs = Blog.objects.all()
+    blogs = Blog.objects.annotate(comment_count=Count('comments'))
+    # blog_comments = {}
+    # for b in blogs:
+    #     comments = Comment.objects.filter(post=b)
+    #     blog_comments[b]=comments
     return render(request, 'blog/all.html', {'blogs': blogs})
 
 def contact(request):
@@ -40,18 +42,18 @@ def contact(request):
 
 def about(request):
     return render(request, 'blog/about.html')
-
+@login_required(login_url='/account/login')
 def like_blog(request, blog_id):
     blog = get_object_or_404(Blog, pk=blog_id)
-    if request.user.is_authenticated:
-        if request.user in blog.like.all():
-            blog.like.remove(request.user)
-            liked = False
-        else:
-            blog.like.add(request.user)
-            liked = True
 
-        return JsonResponse({'liked':liked, 'count':blog.like.count()})
-    else:
-        return JsonResponse({'error':'User is not authenticated'})
+    if request.method == 'POST' and request.user.is_authenticated:
+        user = request.user
+
+        if user in blog.like.all():
+            blog.like.remove(user)
+        else:
+            blog.like.add(user)
+
+    return redirect('detail', blog_id=blog.id)
+
 

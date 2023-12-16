@@ -17,7 +17,7 @@
 
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-        <a class="navbar-brand" href="{% url 'all' %}">TGSC Blog</a>
+        <a class="navbar-brand" href="{% url 'home' %}">The Gospel Study Center Blog</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
             aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -25,8 +25,32 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'home' %}">Home</a>
+                    <a class="nav-link" href="{% url 'home' %}">Home
+                        <span class="sr-only">(current)</span>
+                    </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'all' %}">All blogs</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'about' %}">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+                </li>
+                {% if user.is_authenticated %}
+                   <li class="nav-item">
+                        <a class="nav-item nav-link" href="javascript:{document.getElementById('logout').submit()}">Logout</a>
+                        <form id="logout" method="post" action="{% url 'logout' %}">{% csrf_token %}
+                        <input type="hidden"/>
+
+                        </form>
+                   </li>
+                {% else %}
+                    <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </nav>
@@ -42,9 +66,7 @@
 
                 <!-- Comments Section -->
                 <div class="card my-4">
-                    <button id="like-button" data-blog-id="{{ blog.id }}" {% if request.user in blog.likes.all %}class="liked"{% endif %}>
-                    Like({{ blog.like.count }})
-                    </button>
+
                     <h5 class="card-header">Comments</h5>
 
                     <div class="card-body">
@@ -61,7 +83,15 @@
 
                         <!-- Add a new comment -->
                         <a href="{% url 'add_comment' blog_id=blog.id %}" class="btn btn-primary">Add Comment</a>
+                        <form method="post" action="{% url 'like_blog' blog_id=blog.id %}">
+                        {% csrf_token %}
+                        <button type="submit">
+                        {% if request.user in blog.like.all %}Unlike{% else %}Like{% endif %}
+                        </button>
+                        </form>
                     </div>
+                    <h5>{{ blog.like.count }} like(s), {{ comments.count }} comment(s)</h5>
+
                 </div>
                 <!-- End Comments Section -->
             </div>
@@ -74,37 +104,37 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-        document.getElementById('like-button').addEventListener('click', function(){
-            var blogId = this.getAttribute('data-blog-id');
-            var url = `/blog/${blogId}/like/`;
-
-            fetch(url,{
-                method: 'POST',
-                headers: new Headers({
-                    'Content-Type':'application/json',
-                    'X-CSRFToken':'{{ csrf_token }}',
-                    'X-Requested-With':'XMLHttpRequest',
-                }),
-                credentials:'same-origin'
-            })
-                .then(response => {
-                    if (response.status === 401){
-                        window.location.href='/login/';
-                    }
-                    return response.json()
-                })
-                .then(data => {
-                    if (data.liked) {
-                        this.classList.add('liked');
-                    } else {
-                        this.classList.remove('liked');
-                    }
-                    this.innerText = `Like (${data.count})`;
-                })
-                .catch(error => console.error('Error:',error));
-        });
-    </script>
+{#    <script>#}
+{#        document.getElementById('like-button').addEventListener('click', function(){#}
+{#            var blogId = this.getAttribute('data-blog-id');#}
+{#            var url = `/blog/${blogId}/like/`;#}
+{##}
+{#            fetch(url,{#}
+{#                method: 'POST',#}
+{#                headers: new Headers({#}
+{#                    'Content-Type':'application/json',#}
+{#                    'X-CSRFToken':'{{ csrf_token }}',#}
+{#                    'X-Requested-With':'XMLHttpRequest',#}
+{#                }),#}
+{#                credentials:'same-origin'#}
+{#            })#}
+{#                .then(response => {#}
+{#                    if (response.status === 401){#}
+{#                        window.location.href='/login/';#}
+{#                    }#}
+{#                    return response.json()#}
+{#                })#}
+{#                .then(data => {#}
+{#                    if (data.liked) {#}
+{#                        this.classList.add('liked');#}
+{#                    } else {#}
+{#                        this.classList.remove('liked');#}
+{#                    }#}
+{#                    this.innerText = `Like (${data.count})`;#}
+{#                })#}
+{#                .catch(error => console.error('Error:',error));#}
+{#        });#}
+{#    </script>#}
 </body>
 
 </html>

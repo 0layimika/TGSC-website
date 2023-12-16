@@ -13,7 +13,7 @@ class Blog(models.Model):
     def summary(self):
         return self.content[:150]
 class Comment(models.Model):
-    post = models.ForeignKey(Blog, on_delete=models.CASCADE)
+    post = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name='comments')
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     opinion = models.TextField()
     date_created = models.DateTimeField(auto_now_add=True)
