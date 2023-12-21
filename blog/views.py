@@ -4,6 +4,7 @@ from django.views.generic import *
 from .forms import CommentForm
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
+from django.contrib.auth.decorators import user_passes_test
 def home(request):
     blogs = Blog.objects
     latest_blog = Blog.objects.order_by('date_created')[:3]
@@ -55,5 +56,16 @@ def like_blog(request, blog_id):
             blog.like.add(user)
 
     return redirect('detail', blog_id=blog.id)
-
-
+@user_passes_test(lambda user: user.is_superuser, login_url='/account/login')
+def create(request):
+    if request.method == 'POST':
+        if request.POST['title'] and request.POST['content']:
+            blog = Blog()
+            blog.title = request.POST['title']
+            blog.content = request.POST['content']
+            blog.save()
+            return redirect('home')
+        else:
+            return render(request, 'blog/create.html')
+    else:
+        return render(request, 'blog/create.html')
