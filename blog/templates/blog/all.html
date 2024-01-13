@@ -11,6 +11,7 @@
     <style>
         body {
             padding-top: 56px;
+            background-color: antiquewhite;
         }
 
         @media (min-width: 768px) {
@@ -71,13 +72,13 @@
                 <h1 class="mt-4">The TGSC Blog</h1>
                 <!-- Sample Blog Post -->
                 {% for blog in blogs  %}
-                <div class="card mb-4">
+                <div class="card mb-4" style="background-color: beige">
                     <div class="card-body">
                         <h2 class="card-title">{{ blog.title }}</h2>
                         <p class="card-text">{{blog.summary}} <a href="{% url 'detail' blog_id=blog.id %}">...more</a></p>
                         <a href="{% url 'detail' blog_id=blog.id %}" class="btn btn-primary">Read More &rarr;</a>
                     </div>
-                    <h5>{{ blog.like.count }} like(s), {{ blog.comment_count }} comment(s)</h5>
+                    <h5>{{ blog.like.count }}❤️, {{ blog.comment_count }}🗨️</h5>
                     <div class="card-footer text-muted">
                         Posted on {{ blog.date_created }} by Shobayo Kayode
                     </div>
