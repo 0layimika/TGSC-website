@@ -73,7 +73,7 @@
                 <p class="lead">Latest articles and updates from TGSC.</p>
                 <!-- Sample Blog Post -->
                 {% for latest in latest_blog  %}
-                <div class="card mb-4" style="background-color: beige">
+                <div class="card mb-4" style="background-color: brown">
                     <div class="card-body">
                         <h2 class="card-title">{{ latest.title }}</h2>
                         <p class="card-text">{{latest.summary}} <a href="{% url 'detail' blog_id=latest.id %}">...more</a></p>
