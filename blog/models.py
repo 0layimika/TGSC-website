@@ -7,6 +7,7 @@ class Blog(models.Model):
     content = models.TextField()
     like = models.ManyToManyField(User, related_name='blog_likes', blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
+    author = models.CharField(max_length=50)
 
     def __str__(self):
         return f"{self.title}"

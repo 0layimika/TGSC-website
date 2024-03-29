@@ -9,4 +9,5 @@ urlpatterns=[
     path('about', views.about, name="about"),
     path('<int:blog_id>/like/',views.like_blog,name='like_blog'),
     path('create', views.create, name='create')
+
 ]

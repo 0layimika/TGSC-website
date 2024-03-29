@@ -63,6 +63,7 @@ def create(request):
             blog = Blog()
             blog.title = request.POST['title']
             blog.content = request.POST['content']
+            blog.author = request.POST['author']
             blog.save()
             return redirect('home')
         else:
